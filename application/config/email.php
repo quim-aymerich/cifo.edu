@@ -6,7 +6,7 @@ switch (ENVIRONMENT) {
         $config['mailpath'] = '/usr/sbin/sendmail';
         $config['smtp_host'] = 'smtp.gmail.com';
         $config['smtp_user'] = 's21violeta@gmail.com';
-        $config['smtp_pass'] = 's21v34l2t1';
+        $config['smtp_pass'] = '*******';
         $config['smtp_port'] = 587;
         $config['smtp_timeout'] = 30; // (in seconds)
         $config['smtp_crypto'] = 'tls'; // '' or 'tls' or 'ssl'

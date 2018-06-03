@@ -73,10 +73,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $active_group = 'default';
 $query_builder = TRUE;
 
-switch(ENVIRONMENT){
+switch(ENVIRONMENT){ 
     case 'development':
         $db['default'] = array(
-        'dsn' => '',
+        'dsn'	=> '',
         'hostname' => 'localhost',
         'username' => 'u_cifo',
         'password' => '12345',
@@ -99,7 +99,7 @@ switch(ENVIRONMENT){
         break;
     case 'production':
         $db['default'] = array(
-        'dsn' => '',
+        'dsn'	=> '',
         'hostname' => 'localhost',
         'username' => '',
         'password' => '',
@@ -121,3 +121,5 @@ switch(ENVIRONMENT){
         );
         break;
 }
+
+

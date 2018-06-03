@@ -1,26 +1,29 @@
 <?php
-defined('BASEPATH') or exit('No direct script access allowed');
+if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class User extends CI_Controller
-{
-
-    function __construct()  {
+class User extends CI_Controller {
+    
+    function __construct() {
         parent::__construct();
+        $this->load->helper('url');
         $this->load->model('user_model');
     }
-
+    
     public function login(){
+        
         if($this->input->method(TRUE)=='POST'){
-            $email = $this->input->post('email');
-            $password = $this->input->post('password');
+            $email      = $this->input->post('email');
+            $password   = $this->input->post('password');
+           
             if($user=$this->user_model->login($email,$password)){
                 $this->session->set_userdata('user', $user);
-                redirect('/'); exit;
+                redirect('/'); exit; 
             }else{
-                $this->session->set_flashdata('error_msg', $this->lang->line('Controllers_User_Login_Error'));
-                redirect('/user/login'); exit;
+               $this->session->set_flashdata('error_msg', $this->lang->line('Controllers_User_Login_Error'));
+               redirect('/user/login'); exit;
             }
         }else{
+        
             $this->output->set_template('site/simple');
             // Titol de la plantilla
             $this->output->set_title( 'Login | Cifo ');
@@ -34,37 +37,42 @@ class User extends CI_Controller
         }
     }
     
+    public function logout(){
+        $this->session->unset_userdata('user');
+        redirect($_SERVER['HTTP_REFERER']);
+    }
+    
     public function register(){
-        //Delete the last Captcha created
+        //Delete the last Captcha created 
         if(is_file($_SERVER['DOCUMENT_ROOT'].'/assets/media/captcha/'.$this->session->userdata('captchaTime').'.jpg')){
             unlink($_SERVER['DOCUMENT_ROOT'].'/assets/media/captcha/'.$this->session->userdata('captchaTime').'.jpg');
         }
         if($this->input->method(TRUE)=='POST'){
-            // Comprobación de Email duplicado
-            if( !$this->user_model->email_check($this->input->post('email'))){
+            // Comprovavión de Email duplicado
+            if(  !$this->user_model->email_check($this->input->post('email'))){
                 $this->session->set_flashdata('error_msg', $this->lang->line('Controllers_User_Register_EmailError'));
                 redirect('/user/register');
                 exit;
             }
             //Comprobación de contrasenyas
-            if( $this->input->post('password')!=$this->input->post('repassword') ){
+            if(   $this->input->post('password')!=$this->input->post('repassword')  ){
                 $this->session->set_flashdata('error_msg', $this->lang->line('Controllers_User_Register_PasswordError'));
                 redirect('/user/register');
                 exit;
             }
             // Comprobación de Captcha
-            if( $this->input->post('captcha')!=$this->session->userdata('captchaCode') ){
+            if(   $this->input->post('captcha')!=$this->session->userdata('captchaCode')    ){
                 $this->session->set_flashdata('error_msg', $this->lang->line('Controllers_User_Register_CaptchaError'));
                 redirect('/user/register');
                 exit;
             }
             // Prepare register.
             $data= array(
-                'nombre'        => $this->input->post('nombre' ,TRUE),
-                'apellidos'     => $this->input->post('apellidos' ,TRUE),
-                'email'         => $this->input->post('email' ,TRUE),
-                'password'      => $this->input->post('password' ,TRUE),
-                'id_roles'      => 3,
+                'nombre'    => $this->input->post('nombre'      ,TRUE),
+                'apellidos' => $this->input->post('apellidos'   ,TRUE),
+                'email'     => $this->input->post('email'       ,TRUE),
+                'password'  => $this->input->post('password'    ,TRUE),
+                'id_roles'  => 3,
                 'id_municipios' => 881
             );
             $id=$this->user_model->register($data);
@@ -72,6 +80,7 @@ class User extends CI_Controller
             redirect('/user/login');
         }else{
             $this->load->helper('captcha');
+            
             $this->output->set_template('site/simple');
             // Titol de la plantilla
             $this->output->set_title( 'Register | Cifo ');
@@ -80,6 +89,7 @@ class User extends CI_Controller
             $this->output->set_meta('keywords','Internet, web, formació, gratuït');
             // Arxius de CSS per la vista
             $this->load->css('/assets/site/css/register.css');
+        
             // Captcha configuration
             $config = array(
                 'img_path'      => 'assets/media/captcha/',
@@ -87,15 +97,16 @@ class User extends CI_Controller
                 'img_width'     => '150',
                 'img_height'    => 50,
                 'word_length'   => 8,
-                'font_size'     => 16,
-                'word'          => 'hola'
+                'font_size'     => 16
             );
             $captcha = create_captcha($config);
+            
             // Unset previous captcha and store new captcha word
             $this->session->unset_userdata('captchaCode');
             $this->session->unset_userdata('captchaTime');
             $this->session->set_userdata('captchaCode', $captcha['word']);
             $this->session->set_userdata('captchaTime', $captcha['time']);
+            
             // Send captcha image to view
             $data['captchaImg'] = $captcha['image'];
             // Preparem la vista
@@ -107,13 +118,12 @@ class User extends CI_Controller
         $this->load->helper('captcha');
         // Captcha configuration
         $config = array(
-            'img_path' => 'assets/media/captcha/',
-            'img_url' => base_url().'assets/media/captcha',
-            'img_width' => '150',
-            'img_height' => 50,
-            //'word_length' => 8,
-            'font_size' => 16,
-            'word'      => 'hola'
+            'img_path'      => 'assets/media/captcha/',
+            'img_url'       => base_url().'assets/media/captcha',
+            'img_width'     => '150',
+            'img_height'    => 50,
+            'word_length'   => 8,
+            'font_size'     => 16
         );
         $captcha = create_captcha($config);
         if(is_file($_SERVER['DOCUMENT_ROOT'].'/assets/media/captcha/'.$this->session->userdata('captchaTime').'.jpg')){
@@ -124,21 +134,10 @@ class User extends CI_Controller
         $this->session->unset_userdata('captchaTime');
         $this->session->set_userdata('captchaCode', $captcha['word']);
         $this->session->set_userdata('captchaTime', $captcha['time']);
+        
         // Display captcha image
         echo $captcha['image'];
     }
-    
-    public function logout(){
-        $this->session->unset_userdata('user');
-        redirect($_SERVER['HTTP_REFERER']);
-    }
-    
-    public function test($id=0,$key=''){
-        $this->load->model('user_model');
-        $this->user_model->set(array('llave'=>$key),$id);
-        
-    }
-    
     
 }
 ?>

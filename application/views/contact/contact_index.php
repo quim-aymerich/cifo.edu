@@ -1,39 +1,54 @@
-<div>
-    <?php 
-    $success_msg=$this->session->flashdata('success_msg');
-    if($success_msg){
-        echo $success_msg;
-    }
-    ?>
+<div class="container">
+    <div class="col-md-offset-3 col-md-5">
+        <div class="form-area panel">  
+            <form class="panel-body" role="form" method="post">
+                <br style="clear:both">
+                <?php
+                  $error_msg= (isset($error_msg))? $error_msg: '';
+                  if($error_msg){
+                    ?>
+                    <div class="alert alert-danger"> <?php echo $error_msg; ?></div>
+                  <?php
+                  }
+                ?>
+                <?php
+                $success_msg= (isset($success_msg))? $success_msg : '';
+                  if($success_msg){
+                    ?>
+                    <div class="alert alert-success"> <?php echo $success_msg; ?> </div>
+                  <?php
+                  }
+                ?>
+                <h3 style="margin-bottom: 25px; text-align: center;">Formulario de contacto</h3>
+                <div class="form-group">
+                    <input type="text" value="<?php echo set_value('name'); ?>" class="form-control" id="name" name="name" placeholder="Nombre" >
+                    <?php echo form_error('name'); ?>
+                </div>
+                <div class="form-group">
+                   <input type="text" value="<?php echo set_value('email'); ?>" class="form-control" id="email" name="email" placeholder="Email" >
+                   <?php echo form_error('email'); ?>
+                </div>
+                <div class="form-group">
+                	<input type="text" value="<?php echo set_value('subject'); ?>" class="form-control" id="subject" name="subject" placeholder="Asunto" >
+                <?php echo form_error('subject'); ?>
+                </div>
+                <div class="form-group">
+                <textarea class="form-control"  id="message" name="message" placeholder="Mensaje" maxlength="140" rows="7"><?php echo set_value('message'); ?></textarea>
+                    <span class="help-block">
+                      <p id="characterLeft" class="help-block ">Has llegado al límite de caracteres</p>
+                    </span>
+                    <?php echo form_error('message'); ?>                    
+                </div>
+                <div class="form-group">
+                    <div class="text-center">
+                        <a href="javascript:void(0);" class="refreshCaptcha"> Refrescar </a>
+                      </div>
+                     <div id="captImg" class="text-center"><?php echo $captchaImg ?> </div><br>
+                <input type="text" class="form-control" id="captcha" name="captcha" placeholder="Código de la imagen" >
+                <?php echo form_error('captcha'); ?>
+                </div>
+                <button type="submit" id="submit" name="submit" class="btn btn-primary pull-right">Enviar</button>
+            </form>
+        </div>
+    </div>
 </div>
-
-<form action="" method="post">
-    <div class="form-group">
-    	<label>Nombre</label>
-    	<input class="form-control" type="text" name="name" value="<?php echo set_value('name'); ?>" >
-    	<?php echo form_error('name'); ?>
-    </div>
-    <div class="form-group">
-    	<label>Dirección de correo</label>
-    	<input class="form-control" type="text" name="email" value="<?php echo set_value('email'); ?>" >
-    	<?php echo form_error('email'); ?>
-    </div>
-    <div class="form-group">
-    	<label>Asunto</label>
-    	<input class="form-control" type="text" name="subject" value="<?php echo set_value('subject'); ?>" >
-    	<?php echo form_error('subject'); ?>
-    </div>
-    <div class="form-group">
-    	<label>Mensaje</label>
-    	<textarea class="form-control" name="message"><?php echo set_value('message'); ?></textarea>
-    	<?php echo form_error('message'); ?>
-    </div>
-    <div class="form-group">
-    	<div class="text-block text-center"><?php echo $captcha_image ?></div>
-    	<input class="form-control" type="text" name="captcha" >
-    	<?php echo form_error('captcha'); ?>
-    </div>
-    <div class="form-group">
-    	<input class="btn btn-primary" type="submit" name="Enviar" value="Enviar"> 
-    </div>
-</form>

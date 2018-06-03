@@ -1,32 +1,32 @@
 <?php
-defined('BASEPATH') or exit('No direct script access allowed');
+if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Main extends CI_Controller
-{
-
-    function __construct()
-    {
+class Main extends CI_Controller {
+    
+    function __construct() {
         parent::__construct();
         
         $this->output->set_template('site/default');
     }
-
-    public function index()
-    {
+    
+    public function index(){
+        
         // Titol de la plantilla
-        $this->output->set_title('Cifo');
+        $this->output->set_title( 'Cifo');
         // Secció de META
-        $this->output->set_meta('description', 'Web de Formació dels Cifo\'s');
-        $this->output->set_meta('keywords', 'Internet, web, formació, gratuït');
+        $this->output->set_meta('description','Web de Formació dels Cifo\'s');
+        $this->output->set_meta('keywords','Internet, web, formació, gratuït');
         // Secció barra superior
-        $this->load->section('navigation', 'sections/site/main_navigation');
+        $this->load->section('navigation', 'sections/site/main_navigation' );
         // Secció barra superior
-        $this->load->section('footer', 'sections/site/main_footer');
+        $this->load->section('footer', 'sections/site/main_footer' );
         // Arxius de Script per la vista
         $this->load->js('/assets/site/js/main.js');
+        
         // Preparem la vista
-        $data['heading'] = "Pàgina d'inici del CIFO!";
+        $data['heading']    = "e-Cifo &copy; ";
         $this->load->view('main/main_index', $data);
     }
+     
 }
 ?>

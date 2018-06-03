@@ -53,5 +53,7 @@ $route['default_controller'] = 'main';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
+$route['cpanel/logout']     = 'cpanel/main/logout';
+$route['cpanel/login']      = 'cpanel/main/login';
 
-$route['municipio/(:any)'] = 'municipio/index/$1';
+
