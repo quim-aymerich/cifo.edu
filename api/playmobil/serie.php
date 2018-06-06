@@ -1,7 +1,7 @@
 <?php 
 
 class serie {
-    
+     
     private $mysql;
     private $returnType;
     
